@@ -6,7 +6,6 @@ import { Context } from "../utils/context";
 const TwicImg = ({
   src,
   alt,
-  title,
   placeholder,
   ratio,
   focus,
@@ -50,12 +49,18 @@ const TwicImg = ({
       r.push(width || 1);
       r.push(height || 1);
     }
-    return Number.parseFloat((r[1] / r[0]) * 100).toFixed(2);
+    if (r.length > 0) {
+      return Number.parseFloat((r[1] / r[0]) * 100).toFixed(2);
+    } else {
+      return null;
+    }
   };
 
   const bgStyle = () => {
-    const styles =
-      apiRatio() || paddingRatio() ? { paddingTop: `${paddingRatio()}%` } : "";
+    const styles = {};
+    if (paddingRatio()) {
+      styles.paddingTop = `${paddingRatio()}%`;
+    }
     if (apiOutput) {
       let params = [];
       if (focus) {
@@ -68,12 +73,12 @@ const TwicImg = ({
         params.push({ k: "output", v: apiOutput });
       }
       const apiParams = params.map((item) => `${item.k}=${item.v}`).join("/");
-      styles["backgroundImage"] = `url(${domain}${src}?twic=v1/${apiParams})`;
+      // Add a slash if needed.
+      const path = (/^\//.test(src)) ? domain + src : `${domain}/${src}`;
+      styles.backgroundImage = `url(${path}?twic=v1/${apiParams})`;
     }
     return styles;
   };
-
-  const bgStringStyle = bgStyle();
 
   const imgStyle = transition
     ? {
@@ -84,39 +89,24 @@ const TwicImg = ({
     : {};
 
   return (
-    <div className="twic-img twic-img--fade" style={bgStringStyle}>
+    <div className={`twic-img ${transition ? "twic-img--fade" : ""}`} style={bgStyle()}>
       <img
         style={imgStyle}
-        alt={alt}
-        title={title}
+        alt={alt === undefined ? src.split(/[?#]/).shift().split("/").pop().split(".").shift() : alt}
         src={`${domain}/v1/cover=${apiRatio()}/placeholder:transparent`}
-        width={width}
-        height={height}
+        width={width || undefined}
+        height={height || undefined}
         {...twic}
       />
-      <noscript>
-        <img
-          style={imgStyle}
-          alt={alt}
-          title={title}
-          src={`${domain}${src}?twic=v1/cover=${apiRatio()}/resize=${
-            width || 1000
-          }`}
-          width={width}
-          height={height}
-          {...twic}
-        />
-      </noscript>
     </div>
   );
 };
 
 TwicImg.defaultProps = {
-  alt: "",
-  title: "",
+  alt: undefined,
   placeholder: "preview",
-  width: 0,
-  height: 0,
+  width: undefined,
+  height: undefined,
   ratio: "",
   focus: "",
   step: 10,
@@ -129,7 +119,6 @@ TwicImg.defaultProps = {
 TwicImg.propTypes = {
   src: PropTypes.string.isRequired,
   alt: PropTypes.string,
-  title: PropTypes.string,
   placeholder: PropTypes.oneOf(["preview", "meancolor", "maincolor", "none"]),
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),

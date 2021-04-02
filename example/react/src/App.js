@@ -1,10 +1,10 @@
-import TwicImg from "react-twicpics";
-import "react-twicpics/build/twicpics.css";
+import TwicImg from "@twicpics/react";
+import "@twicpics/react/build/twicpics.css";
 
 function App() {
   return (
     <main>
-      <TwicImg src="/football.jpg" step="100" />
+      <TwicImg src="https://assets.twicpics.com/examples/football.jpg" step="100" />
       <TwicImg
         src="/football.jpg"
         ratio="16/9"
@@ -19,6 +19,7 @@ function App() {
         width="500"
         height="800"
         placeholder="none"
+        alt="custom alt attribute"
       />
     </main>
   );

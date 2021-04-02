@@ -7,7 +7,7 @@ module.exports = {
   output: {
     path: path.resolve("build"),
     filename: "twicpics.js",
-    library: "react-twicpics",
+    library: "@twicpics/react",
     libraryTarget: "umd",
     globalObject: "this",
   },

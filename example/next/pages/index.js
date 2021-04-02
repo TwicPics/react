@@ -1,6 +1,6 @@
 import React from "react";
-import TwicImg from "react-twicpics";
-import "react-twicpics/build/twicpics.css";
+import TwicImg from "@twicpics/react";
+import "@twicpics/react/build/twicpics.css";
 
 export default function Home() {
   return (

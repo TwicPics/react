@@ -1,5 +1,5 @@
 import React from "react";
-import { Twicpics } from "react-twicpics";
+import { Twicpics } from "@twicpics/react";
 import "./index.css";
 
 function MyApp({ Component, pageProps }) {

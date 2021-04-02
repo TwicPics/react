@@ -4,7 +4,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 
-import { Twicpics } from "react-twicpics";
+import { Twicpics } from "@twicpics/react";
 
 ReactDOM.render(
   <React.StrictMode>
