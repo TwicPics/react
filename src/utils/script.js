@@ -1,3 +1,4 @@
+/* eslint react/prop-types: "off" */
 import React, { useEffect } from "react";
 
 import { Context } from "../utils/context";

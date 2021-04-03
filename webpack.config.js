@@ -5,7 +5,7 @@ module.exports = {
   mode: "development",
   entry: "./src/index.js",
   output: {
-    path: path.resolve("build"),
+    path: path.resolve("dist"),
     filename: "twicpics.js",
     library: "@twicpics/react",
     libraryTarget: "umd",
