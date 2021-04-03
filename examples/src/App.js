@@ -1,5 +1,5 @@
 import TwicImg from "@twicpics/react";
-import "@twicpics/react/build/twicpics.css";
+import "@twicpics/react/dist/twicpics.css";
 
 function App() {
   return (
