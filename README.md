@@ -78,7 +78,8 @@ To avoid requesting too may variants of the same image, TwicPics will round the 
 	ratio="<ratio>"
 	step="<integer>"
 	focus="<auto|coordinates>"
-	transition="<boolean>" />
+	transition="<boolean>" 
+/>
 ```
 
 | Name | Description | Type | Default | Required |
@@ -118,6 +119,10 @@ function App() {
 
 export default App;
 ```
+
+## Demo
+
+[![Edit TwicPics React](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/twicpics-react-miyzz?fontsize=14&hidenavigation=1&theme=dark)
 
 ## License
 
