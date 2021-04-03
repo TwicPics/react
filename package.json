@@ -1,7 +1,7 @@
 {
   "name": "@twicpics/react",
   "description": "TwicPics components library for React.js",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "TwicPics",
   "license": "MIT",
   "main": "./dist/twicpics.js",
