@@ -1,40 +1,24 @@
-/* eslint react/prop-types: "off" */
-import React, { useEffect } from "react";
+export function Twicpics({ domain, defaultParams }) {
+  if (typeof window !== "undefined") {
+    const domainUrl = `${domain}/?v1`;
+    const el = document.createElement("script");
+    const params =
+      defaultParams &&
+      Object.entries(defaultParams)
+        .map(([key, value]) => {
+          if (key === "maxDpr") return `&max-dpr=${value}`;
+          else return `&${key}=${value}`;
+        })
+        .join("");
 
-import { Context } from "../utils/context";
+    el.src = defaultParams ? domainUrl + params : domainUrl;
+    el.setAttribute("data-id", "twicpics-script");
 
-const { Provider } = Context;
+    const link = document.createElement("link");
+    link.setAttribute("rel", "preconnect");
+    link.setAttribute("href", domain);
 
-const Twicpics = (props) => {
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const domainUrl = `${props.domain}/?v1`;
-      const el = document.createElement("script");
-      const params =
-        props.defaultParams &&
-        Object.entries(props.defaultParams)
-          .map(([key, value]) => {
-            if (key === "maxDpr") return `&max-dpr=${value}`;
-            else return `&${key}=${value}`;
-          })
-          .join("");
-
-      el.src = props.defaultParams ? domainUrl + params : domainUrl;
-
-      const link = document.createElement("link");
-      link.setAttribute("rel", "preconnect");
-      link.setAttribute("href", props.domain);
-
-      document.head.appendChild(link);
-      document.head.appendChild(el);
-    }
-  }, []);
-
-  return (
-    <Provider value={{ params: props.defaultParams, domain: props.domain }}>
-      {props.children}
-    </Provider>
-  );
-};
-
-export default Twicpics;
+    document.head.appendChild(link);
+    document.head.appendChild(el);
+  }
+}

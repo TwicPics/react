@@ -6,18 +6,18 @@ import "./index.css";
 
 import { Twicpics } from "@twicpics/react";
 
+Twicpics({
+  domain: "https://demo.twic.pics",
+  defaultParams: {
+    anticipation: 0.5,
+    maxDpr: 2,
+    step: 100,
+  },
+});
+
 ReactDOM.render(
   <React.StrictMode>
-    <Twicpics
-      domain="https://demo.twic.pics"
-      defaultParams={{
-        anticipation: 0.5,
-        maxDpr: 2,
-        step: 100,
-      }}
-    >
-      <App />
-    </Twicpics>
+    <App />
   </React.StrictMode>,
   document.getElementById("root")
 );
