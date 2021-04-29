@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import "./twic.module.css";
-import { Context } from "../utils/context";
 
 const TwicImg = ({
   src,
@@ -17,9 +16,18 @@ const TwicImg = ({
   transitionTimingFunction,
   transitionDelay,
 }) => {
-  const context = useContext(Context);
-  const params = context.params;
-  const domain = context.domain;
+  const script = document.querySelector('script[data-id="twicpics-script"]')
+    .src;
+
+  const [longDomain, ...attributes] = script.split("&");
+  const [domain] = longDomain.split("/?v1");
+
+  const params = attributes.reduce((acc, attribute) => {
+    const [name, value] = attribute.split("=");
+    const numberValue = parseFloat(value);
+    acc[name] = isNaN(numberValue) ? value : numberValue;
+    return acc;
+  }, {});
 
   const twicClass = params ? (params.class ? params.class : "twic") : "twic";
 
@@ -74,7 +82,7 @@ const TwicImg = ({
       }
       const apiParams = params.map((item) => `${item.k}=${item.v}`).join("/");
       // Add a slash if needed.
-      const path = (/^\//.test(src)) ? domain + src : `${domain}/${src}`;
+      const path = /^\//.test(src) ? domain + src : `${domain}/${src}`;
       styles.backgroundImage = `url(${path}?twic=v1/${apiParams})`;
     }
     return styles;
@@ -89,10 +97,17 @@ const TwicImg = ({
     : {};
 
   return (
-    <div className={`twic-img ${transition ? "twic-img--fade" : ""}`} style={bgStyle()}>
+    <div
+      className={`twic-img ${transition ? "twic-img--fade" : ""}`}
+      style={bgStyle()}
+    >
       <img
         style={imgStyle}
-        alt={alt === undefined ? src.split(/[?#]/).shift().split("/").pop().split(".").shift() : alt}
+        alt={
+          alt === undefined
+            ? src.split(/[?#]/).shift().split("/").pop().split(".").shift()
+            : alt
+        }
         src={`${domain}/v1/cover=${apiRatio()}/placeholder:transparent`}
         width={width || undefined}
         height={height || undefined}

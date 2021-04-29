@@ -4,7 +4,10 @@ import "@twicpics/react/dist/twicpics.css";
 function App() {
   return (
     <main>
-      <TwicImg src="https://assets.twicpics.com/examples/football.jpg" step="100" />
+      <TwicImg
+        src="https://assets.twicpics.com/examples/football.jpg"
+        step="100"
+      />
       <TwicImg
         src="/football.jpg"
         ratio="16/9"
