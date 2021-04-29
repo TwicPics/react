@@ -15,7 +15,7 @@ yarn add @twicpics/react
 # or npm install @twicpics/react
 ```
 
-2.  Import components
+2.  Setup
 
 ```js
 import React from "react";
@@ -24,16 +24,18 @@ import App from "./App";
 
 import { Twicpics } from "@twicpics/react";
 
+Twicpics({
+  domain: "https://demo.twic.pics",
+  defaultParams: {
+    anticipation: 0.5,
+    maxDpr: 2,
+    step: 100,
+  },
+});
+
 ReactDOM.render(
   <React.StrictMode>
-    <Twicpics
-      domain="https://demo.twic.pics"
-      defaultParams={{
-        ...
-      }}
-    >
-      <App />
-    </Twicpics>
+    <App />
   </React.StrictMode>,
   document.getElementById("root")
 );
