@@ -122,6 +122,33 @@ function App() {
 export default App;
 ```
 
+### Dynamic height
+
+It is possible to specify a `width` with `height="auto"` and no `ratio`. The image will then be resized to the given width and the ratio will be computed based on the intrinsic size of the original.
+
+```js
+import TwicImg from "@twicpics/react";
+import "@twicpics/react/build/twicpics.css";
+
+function App() {
+  return (
+    <main>
+      <TwicImg
+        src="/my-image.jpg"
+        width="500"
+        height="auto"
+      />
+    </main>
+  );
+}
+
+export default App;
+```
+
+Note that, in that situation, no placeholder will ever be generated no matter the value of the `placeholder` attribute.
+
+We do not recommend this approach as it will trigger reflows in your page and damage performance unless you use very specific CSS styling on the TwicImg component or its container.
+
 ## Demo
 
 [![Edit TwicPics React](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/twicpics-react-miyzz?fontsize=14&hidenavigation=1&theme=dark)

@@ -24,6 +24,11 @@ function App() {
         placeholder="none"
         alt="custom alt attribute"
       />
+      <TwicImg
+        src="/football.jpg"
+        width="500"
+        height="auto"
+      />
     </main>
   );
 }

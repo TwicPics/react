@@ -37,19 +37,17 @@ const TwicImg = ({
     [`data-${twicClass}-src-step`]: step,
   };
 
-  const apiRatio = () => {
+  const apiRatio = ( () => {
     if (ratio) {
       return ratio.replace("/", ":");
     } else if (width && height) {
-      return `${width}:${height}`;
+      return height === `auto` ? null : `${width}:${height}`;
     } else {
       return "1:1";
     }
-  };
+  } )();
 
-  const apiOutput = placeholder !== "none" ? placeholder : false;
-
-  const paddingRatio = () => {
+  const paddingRatio = ( () => {
     let r = [];
     if (ratio) {
       r = ratio.split("/");
@@ -62,20 +60,25 @@ const TwicImg = ({
     } else {
       return null;
     }
-  };
+  } )();
 
-  const bgStyle = () => {
+  const apiOutput = placeholder !== "none" ? placeholder : false;
+
+  const bgStyle = ( () => {
+    if ( !apiRatio ) {
+      return undefined;
+    }
     const styles = {};
-    if (paddingRatio()) {
-      styles.paddingTop = `${paddingRatio()}%`;
+    if (paddingRatio) {
+      styles.paddingTop = `${paddingRatio}%`;
     }
     if (apiOutput) {
       let params = [];
       if (focus) {
         params.push({ k: "focus", v: focus });
       }
-      if (apiRatio()) {
-        params.push({ k: "cover", v: apiRatio() });
+      if (apiRatio) {
+        params.push({ k: "cover", v: apiRatio });
       }
       if (apiOutput) {
         params.push({ k: "output", v: apiOutput });
@@ -86,7 +89,7 @@ const TwicImg = ({
       styles.backgroundImage = `url(${path}?twic=v1/${apiParams})`;
     }
     return styles;
-  };
+  } )();
 
   const imgStyle = transition
     ? {
@@ -96,10 +99,14 @@ const TwicImg = ({
       }
     : {};
 
+  if ( !bgStyle ) {
+    imgStyle.height = "auto";
+  }
+
   return (
     <div
       className={`twic-img ${transition ? "twic-img--fade" : ""}`}
-      style={bgStyle()}
+      style={bgStyle}
     >
       <img
         style={imgStyle}
@@ -108,7 +115,7 @@ const TwicImg = ({
             ? src.split(/[?#]/).shift().split("/").pop().split(".").shift()
             : alt
         }
-        src={`${domain}/v1/cover=${apiRatio()}/placeholder:transparent`}
+        src={`${domain}/v1/${apiRatio?`cover=${apiRatio}`:`resize=${width}x1`}/placeholder:transparent`}
         width={width || undefined}
         height={height || undefined}
         {...twic}
