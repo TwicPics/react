@@ -48,6 +48,9 @@ const TwicImg = ({
   } )();
 
   const paddingRatio = ( () => {
+    if ( !apiRatio ) {
+      return undefined;
+    }
     let r = [];
     if (ratio) {
       r = ratio.split("/");
