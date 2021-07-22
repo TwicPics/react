@@ -20,6 +20,19 @@ const getScriptInfo = ( () => {
     };
 } )();
 
+const MIN_AREA = 12000;
+
+const minArea = ratio => {
+    let [ w, h ] = ratio;
+    const area = w * h;
+    if ( area < MIN_AREA ) {
+        const mult = Math.ceil( MIN_AREA / area );
+        w *= mult;
+        h *= mult;
+    }
+    return `${ w }x${ h }`;
+};
+
 const rAlt = /\/([^/?#.]+)[^/?#]*(?:[?#].*)?$/;
 const rStartSlash = /^\//;
 
@@ -27,23 +40,21 @@ const TwicImg = attributes => {
 
     const scriptInfo = getScriptInfo();
 
-    const { "focus": focusPoint, height, width, src } = attributes;
+    const { height, mode, src, transition, transitionDelay, transitionDuration, transitionTimingFunction, width } =
+        attributes;
 
-    // eslint-disable-next-line no-param-reassign
     const ratio =
         // eslint-disable-next-line no-nested-ternary
-        attributes.ratio ?
-            attributes.ratio.split( `/` ) :
-            (
-                // eslint-disable-next-line no-nested-ternary
-                ( width && height ) ?
-                    ( ( height === `auto` ) ? undefined : [ width, height ] ) :
-                    [ 1, 1 ]
-            );
+        attributes.ratio ? attributes.ratio.split( `/` ) : ( ( width && height ) ? [ width, height ] : [ 1, 1 ] );
 
-    const apiRatio = ratio && ratio.join( `:` );
+    const apiRatio = ratio.join( `:` );
 
-    const { transition, transitionDelay, transitionDuration, transitionTimingFunction } = attributes;
+    const isCover = ( mode === `cover` );
+
+    const position = ( isCover ? `center` : attributes.position );
+
+    const focusPoint = ( isCover && attributes.focus ) || undefined;
+    const placeholderTransform = `${ mode }=${ isCover ? apiRatio : minArea( ratio ) }`;
 
     return (
         <div
@@ -51,28 +62,26 @@ const TwicImg = attributes => {
                 `twic-img ${ transition ? `twic-img--fade` : `` }`
             }
             style = {
-                ratio && ( () => {
+                ( () => {
                     const styles = {
+                        "backgroundPosition": position,
+                        "backgroundSize": mode,
                         // eslint-disable-next-line no-magic-numbers
-                        "paddingTop": `${ Number.parseFloat( ( ratio[ 1 ] / ratio[ 0 ] ) * 100 ).toFixed( 2 ) }%`,
+                        "paddingTop": `${ ( ( ratio[ 1 ] * 100 ) / ratio[ 0 ] ).toFixed( 10 ) }%`,
                     };
                     const apiOutput = ( attributes.placeholder !== `none` ) && attributes.placeholder;
                     if ( apiOutput ) {
-                        const transforms = [];
-                        if ( focusPoint ) {
-                            transforms.push( `focus=${ focusPoint }` );
-                        }
-                        transforms.push( `cover=${ apiRatio }` );
-                        if ( apiOutput ) {
-                            transforms.push( `output=${ apiOutput }` );
-                        }
                         styles.backgroundImage = `url(${
                             // add a slash if needed.
                             rStartSlash.test( src ) ?
                                 `${ scriptInfo.domain }${ src }` :
                                 `${ scriptInfo.domain }/${ src }`
-                        }?twic=v1/${
-                            transforms.join( `/` )
+                        }?twic=v1${
+                            focusPoint ? `/focus=${ focusPoint }` : ``
+                        }/${
+                            placeholderTransform
+                        }/output=${
+                            apiOutput
                         })`;
                     }
                     return styles;
@@ -81,16 +90,19 @@ const TwicImg = attributes => {
         >
             <img
                 style = {
-                    transition ?
-                        {
-                            "height": ratio ? undefined : `auto`,
-                            transitionDelay,
-                            transitionDuration,
-                            transitionTimingFunction,
-                        } :
-                        {
-                            "height": ratio ? undefined : `auto`,
-                        }
+                    {
+                        "objectFit": mode,
+                        "objectPosition": position,
+                        ...(
+                            transition ?
+                                {
+                                    transitionDelay,
+                                    transitionDuration,
+                                    transitionTimingFunction,
+                                } :
+                                {}
+                        ),
+                    }
                 }
                 alt = {
                     attributes.alt || ( () => {
@@ -99,17 +111,13 @@ const TwicImg = attributes => {
                     } )()
                 }
                 src = {
-                    `${
-                        scriptInfo.domain
-                    }/v1/cover=${
-                        apiRatio || `${ width }x1`
-                    }/placeholder:transparent`
+                    `${ scriptInfo.domain }/v1/${ placeholderTransform }/placeholder:transparent`
                 }
                 width = {
-                    ( ratio && width ) || undefined
+                    width || undefined
                 }
                 height = {
-                    ( ratio && height ) || undefined
+                    height || undefined
                 }
                 {
                     ...{
@@ -127,7 +135,9 @@ TwicImg.defaultProps = {
     "alt": undefined,
     "focus": undefined,
     "height": undefined,
+    "mode": `cover`,
     "placeholder": `preview`,
+    "position": `center`,
     "ratio": undefined,
     "step": undefined,
     "transition": true,
@@ -141,7 +151,9 @@ TwicImg.propTypes = {
     "alt": PropTypes.string,
     "focus": PropTypes.string,
     "height": PropTypes.oneOfType( [ PropTypes.string, PropTypes.number ] ),
+    "mode": PropTypes.oneOf( [ `contain`, `cover` ] ),
     "placeholder": PropTypes.oneOf( [ `preview`, `meancolor`, `maincolor`, `none` ] ),
+    "position": PropTypes.string,
     "ratio": PropTypes.string,
     "src": PropTypes.string.isRequired,
     "step": PropTypes.oneOfType( [ PropTypes.string, PropTypes.number ] ),

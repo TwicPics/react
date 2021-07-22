@@ -26,9 +26,38 @@ function App() {
       />
       <TwicImg
         src="/football.jpg"
+        step="100"
+        focus="auto"
         width="500"
-        height="auto"
+        height="800"
+        mode="contain"
+        position="top"
       />
+      <TwicImg
+        src="/football.jpg"
+        step="100"
+        focus="auto"
+        width="500"
+        height="800"
+        mode="contain"
+      />
+      <TwicImg
+        src="/football.jpg"
+        step="100"
+        focus="auto"
+        width="500"
+        height="800"
+        mode="contain"
+        position="left bottom"
+      />
+      <TwicImg
+        src="/football.jpg"
+        ratio="16/9"
+        step="100"
+        focus="auto"
+        mode="contain"
+      />
+
     </main>
   );
 }

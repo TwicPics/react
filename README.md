@@ -73,14 +73,16 @@ To avoid requesting too may variants of the same image, TwicPics will round the 
 
 ```html
 <TwicImg 
-	src="<image-path>"
-	width="<integer>"
-	height="<integer>"
-	placeholder="<none|preview|meancolor|maincolor>"
-	ratio="<ratio>"
-	step="<integer>"
-	focus="<auto|coordinates>"
-	transition="<boolean>" 
+  src="<image-path>"
+  width="<integer>"
+  height="<integer>"
+  placeholder="<none|preview|meancolor|maincolor>"
+  mode="<contain|cover>"
+  position="<css position>"
+  ratio="<ratio>"
+  step="<integer>"
+  focus="<auto|coordinates>"
+  transition="<boolean>"
 />
 ```
 
@@ -89,10 +91,12 @@ To avoid requesting too may variants of the same image, TwicPics will round the 
 | `src` | Absolute or relative path to an image. | `String` | | `true` |
 | `width` | See `ratio`. | `Integer` | | `false` |
 | `height` | See `ratio`. | `Integer` | | `false` |
-| `ratio` | Unitless `width/height` values. You can either use `ratio` or `width` and `height` to set the aspect-ratio of your image. If both are used, `ratio` win. A squared image will be rendered by default. | `String` | `1/1` | `false` |
+| `ratio` | Unitless `width/height` value pair. You can either use `ratio` or `width` and `height` to set the aspect-ratio of the area your image will be in. If both are used, `ratio` win. A squared area will be created by default. | `String` | `1/1` | `false` |
 | `placeholder` | Can be `preview`, `meancolor`, `maincolor` or `none`. | `String` | `preview` | `false` |
+| `mode` | Can be `contain` or `cover` and determines if the image fills the area and is cropped accordingly (`cover`) or if the image will sit inside the area with no cropping (`contain`). | `String` | `cover` | `false` |
+| `position` | Only useful in `contain` mode. Locates the image inside the area. Syntax is the same as for CSS position properties like [background-position](https://developer.mozilla.org/en-US/docs/Web/CSS/background-position) or [object-position](https://developer.mozilla.org/en-US/docs/Web/CSS/object-position). Useful values are `top`, `bottom`, `left`, `right`, `left top`, `left bottom` and so on. | `String` | `center` | `false` | 
 | `step` | See [TwicPics documentation](https://www.twicpics.com/documentation/script-attributes-image/#data-twic-src-step) for details. | `Integer` | `10` | `false` |
-| `focus` | Can be `auto` or coordinates - see [TwicPics documentation](https://www.twicpics.com/documentation/script-attributes-image/#data-twic-src-focus) for details. | `String` | `10` | `false` |
+| `focus` | Only useful in `cover` mode. Can be `auto` or coordinates - see [TwicPics documentation](https://www.twicpics.com/documentation/script-attributes-image/#data-twic-src-focus) for details. | `String` | `10` | `false` |
 | `transition` | Whether or not to load images with a fade in effect. | `Boolean` | `true` | `false` |
 | `transitionDuration` | Duration of the transition effect. | `String` | `400ms` | `false` |
 | `transitionTimingFunction` | CSS timing function applied to the transition effect. | `String` | `ease` | `false` |
@@ -121,33 +125,6 @@ function App() {
 
 export default App;
 ```
-
-### Dynamic height
-
-It is possible to specify a `width` with `height="auto"` and no `ratio`. The image will then be resized to the given width and the ratio will be computed based on the intrinsic size of the original.
-
-```js
-import TwicImg from "@twicpics/react";
-import "@twicpics/react/build/twicpics.css";
-
-function App() {
-  return (
-    <main>
-      <TwicImg
-        src="/my-image.jpg"
-        width="500"
-        height="auto"
-      />
-    </main>
-  );
-}
-
-export default App;
-```
-
-Note that, in that situation, no placeholder will ever be generated no matter the value of the `placeholder` attribute.
-
-We do not recommend this approach as it will trigger reflows in your page and damage performance unless you use very specific CSS styling on the TwicImg component or its container.
 
 ## Demo
 
