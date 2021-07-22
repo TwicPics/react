@@ -102,7 +102,7 @@ const TwicImg = ({
       }
     : {};
 
-  if ( !bgStyle ) {
+  if ( !apiRatio ) {
     imgStyle.height = "auto";
   }
 
