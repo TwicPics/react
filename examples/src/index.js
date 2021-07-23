@@ -4,13 +4,13 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 
-import { Twicpics } from "@twicpics/react";
+import { TwicPics } from "@twicpics/react";
 
-Twicpics({
+TwicPics({
   domain: "https://demo.twic.pics",
   defaultParams: {
     anticipation: 0.5,
-    maxDpr: 2,
+    maxDPR: 2,
     step: 100,
   },
 });

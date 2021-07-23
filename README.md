@@ -22,13 +22,13 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 
-import { Twicpics } from "@twicpics/react";
+import { TwicPics } from "@twicpics/react";
 
-Twicpics({
+TwicPics({
   domain: "https://demo.twic.pics",
   defaultParams: {
     anticipation: 0.5,
-    maxDpr: 2,
+    maxDPR: 2,
     step: 100,
   },
 });
@@ -55,7 +55,7 @@ This is your very own [TwicPics domain](https://www.twicpics.com/documentation/s
 
 TwicPics will lazy-load images by default. To avoid too abrupt a transition with elements appearing into view and then images very obviously loading afterwards, TwicPics will "anticipate" lazy loading by a factor of the actual viewport. This behavior is controlled by this setting.
 
-#### `maxDpr`
+#### `maxDPR`
 
 *   Default value: `2` (any value that is not a number will be ignored)
 
