@@ -1,24 +1,36 @@
-export const Twicpics = ( { domain, defaultParams } ) => {
-    if ( typeof window !== `undefined` ) {
+const PARAMS = {
+    "anticipation": `anticipation`,
+    "class": `class`,
+    "maxdpr": `max-dpr`,
+    "path": `path`,
+    "step": `step`,
+};
+
+const translateKey = key => {
+    const lowerCaseKey = key.toLowerCase();
+    return PARAMS.hasOwnProperty( lowerCaseKey ) ? PARAMS[ lowerCaseKey ] : undefined;
+};
+
+export const Twicpics = config => {
+    if ( typeof document !== `undefined` ) {
+
+        const { domain, defaultParams } = config;
 
         const parts = [ `${ domain }/?v1` ];
         let twicClass = `twic`;
 
-        if ( defaultParams ) {
-            Object.entries( defaultParams ).forEach( ( [ key, value ] ) => {
-                if ( value != null ) {
-                    // eslint-disable-next-line no-param-reassign
-                    key = key.toLowerCase();
-                    if ( key === `maxdpr` ) {
-                        // eslint-disable-next-line no-param-reassign
-                        key = `max-dpr`;
-                    } else if ( key === `class` ) {
-                        twicClass = value;
-                    }
-                    parts.push( `${ key }=${ value }` );
+        Object.entries( defaultParams ? {
+            ...defaultParams,
+            ...config,
+        } : config ).forEach( ( [ key, value ] ) => {
+            // eslint-disable-next-line no-param-reassign
+            if ( ( key = translateKey( key ) ) ) {
+                if ( key === `class` ) {
+                    twicClass = value;
                 }
-            } );
-        }
+                parts.push( `${ key }=${ value }` );
+            }
+        } );
 
         const link = document.createElement( `link` );
         link.rel = `preconnect`;

@@ -8,11 +8,9 @@ import { TwicPics } from "@twicpics/react";
 
 TwicPics({
   domain: "https://demo.twic.pics",
-  defaultParams: {
-    anticipation: 0.5,
-    maxDPR: 2,
-    step: 100,
-  },
+  anticipation: 0.5,
+  maxDPR: 2,
+  step: 100,
 });
 
 ReactDOM.render(

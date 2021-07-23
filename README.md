@@ -26,11 +26,9 @@ import { TwicPics } from "@twicpics/react";
 
 TwicPics({
   domain: "https://demo.twic.pics",
-  defaultParams: {
-    anticipation: 0.5,
-    maxDPR: 2,
-    step: 100,
-  },
+  anticipation: 0.5,
+  maxDPR: 2,
+  step: 100,
 });
 
 ReactDOM.render(
@@ -47,21 +45,19 @@ ReactDOM.render(
 
 This is your very own [TwicPics domain](https://www.twicpics.com/documentation/subdomain/). 
 
-### `defaultParams` (optional)
-
-#### `anticipation`
+### `anticipation`
 
 *   Default value: `0.2` (any value that is not a number will be ignored)
 
 TwicPics will lazy-load images by default. To avoid too abrupt a transition with elements appearing into view and then images very obviously loading afterwards, TwicPics will "anticipate" lazy loading by a factor of the actual viewport. This behavior is controlled by this setting.
 
-#### `maxDPR`
+### `maxDPR`
 
 *   Default value: `2` (any value that is not a number will be ignored)
 
 TwicPics will take the Device Pixel Ratio of the current device into consideration when determining the sizes of images to load. By default, it will not take a DPR greater than 2 into consideration. If the DPR of the device is higher than 2, TwicPics will assume it to be 2. So you can lower it to 1 or be more permissive (for instance by setting it to 3 or 4).
 
-#### `step`
+### `step`
 
 *   Default value: `10` (any value that is not a number will be ignored)
 
