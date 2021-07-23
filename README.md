@@ -43,7 +43,7 @@ ReactDOM.render(
 
 ### `domain` (required)
 
-This is your very own [TwicPics domain](https://www.twicpics.com/documentation/subdomain/). 
+This is your very own [TwicPics domain](https://www.twicpics.com/docs/getting-started/subdomain/). 
 
 ### `anticipation`
 
